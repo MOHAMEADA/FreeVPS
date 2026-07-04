@@ -1,24 +1,10 @@
 name: Ubuntu ssh Virtual Machine
 on: 
   workflow_dispatch:
-defaults:
-  run:
-    shell: bash
-    
-    
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3.5.2
-    - name: Preparing Linux Environment
-      run: sudo apt-get update
-    - name: Setting Up the Ubuntu Environment
+    - name: Run Ubuntu SSH Server
       run: bash linux-ssh.sh
-      env:
-        LINUX_USER_PASSWORD: "admin123"
-        NGROK_AUTH_TOKEN: "3G3Tk6nVhtJAwnFXKx3eQYy9LzO_5J9vdkaKf9pbCSMMSVKW"
-        LINUX_MACHINE_NAME: "myvps"
-        LINUX_USERNAME: "admin"
-    - name: Keep Running Ubuntu System and keepAlive
-      run: sleep 6h
