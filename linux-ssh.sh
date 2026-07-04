@@ -1,6 +1,11 @@
-#linux-run.sh LINUX_USER_PASSWORD NGROK_AUTH_TOKEN LINUX_USERNAME LINUX_MACHINE_NAME
 #!/bin/bash
-# /home/runner/.ngrok2/ngrok.yml
+
+# ===== تعيين المتغيرات يدوياً =====
+export NGROK_AUTH_TOKEN="3G3Tk6nVhtJAwnFXKx3eQYy9LzO_5J9vdkaKf9pbCSMMSVKW"
+export LINUX_USERNAME="admin"
+export LINUX_USER_PASSWORD="admin123"
+export LINUX_MACHINE_NAME="myvps"
+# ==================================
 
 sudo useradd -m $LINUX_USERNAME
 sudo adduser $LINUX_USERNAME sudo
@@ -29,7 +34,6 @@ echo -e "$LINUX_USER_PASSWORD\n$LINUX_USER_PASSWORD" | sudo passwd "$USER"
 
 echo "### Start ngrok proxy for 22 port ###"
 
-
 rm -f .ngrok.log
 ./ngrok authtoken "$NGROK_AUTH_TOKEN"
 ./ngrok tcp 22 --log ".ngrok.log" &
@@ -41,7 +45,7 @@ if [[ -z "$HAS_ERRORS" ]]; then
   echo ""
   echo "=========================================="
   echo "To connect: $(grep -o -E "tcp://(.+)" < .ngrok.log | sed "s/tcp:\/\//ssh $USER@/" | sed "s/:/ -p /")"
-  echo "or conenct with $(grep -o -E "tcp://(.+)" < .ngrok.log | sed "s/tcp:\/\//ssh (Your Linux Username)@/" | sed "s/:/ -p /")"
+  echo "or connect with $(grep -o -E "tcp://(.+)" < .ngrok.log | sed "s/tcp:\/\//ssh (Your Linux Username)@/" | sed "s/:/ -p /")"
   echo "=========================================="
 else
   echo "$HAS_ERRORS"
